@@ -113,8 +113,9 @@ Interpretation:
 
 ## Demo
 
-- Demo video (open in new page/download): [web-demo.mp4](demo-video/web-demo.mp4)
-- Note: GitHub README does not reliably support inline embedding of local MP4 files. Use the link above.
+<video src="demo-video/web-demo.mp4" controls width="600"></video>
+- Demo video (download): [web-demo.mp4](demo-video/web-demo.mp4)
+
 
 ## How To Run
 
