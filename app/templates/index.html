@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chapter 4 Contextual Retrieval Chatbot</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #0b6bcb;
+      --border: #dbe3ef;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(180deg, #eef4fc 0%, #f8fbff 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 28px auto;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(17, 24, 39, 0.05);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.5rem;
+    }
+
+    .muted {
+      color: var(--muted);
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    textarea,
+    input[type="number"] {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .answer {
+      white-space: pre-wrap;
+      line-height: 1.45;
+    }
+
+    .error {
+      color: #b91c1c;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+      background: #fafcff;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .chunk-text {
+      margin-top: 10px;
+      white-space: pre-wrap;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    .footer {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .suggestions {
+      margin: 8px 0 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #f4f8ff;
+      color: #0f3d75;
+      font-size: 0.86rem;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .chip:hover {
+      background: #e8f1ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Chapter 4 Contextual Retrieval Chatbot</h1>
+      <p class="muted">Source book: Speech and Language Processing (Jurafsky and Martin, 3rd ed.)</p>
+      <p class="muted">Retriever: all-MiniLM-L6-v2 | Generator: {{ ollama_model }}</p>
+      <p class="muted">Ollama endpoint: {{ ollama_url }}</p>
+    </div>
+
+    <div class="card">
+      <form method="post">
+        <label for="question">Ask a question about Chapter 4</label>
+        <textarea id="question" name="question" rows="4" placeholder="What is the sigmoid function?">{{ question }}</textarea>
+
+        {% if question_suggestions %}
+          <p class="muted">Try a suggested question:</p>
+          <div class="suggestions">
+            {% for q in question_suggestions %}
+              <button class="chip" type="button" onclick='setQuestion({{ q|tojson }})'>{{ q }}</button>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <label for="top_k">Top-k retrieved chunks (1-10)</label>
+        <input id="top_k" name="top_k" type="number" min="1" max="10" value="{{ top_k }}" />
+
+        <button type="submit">Ask</button>
+      </form>
+    </div>
+
+    {% if error %}
+      <div class="card">
+        <div class="error">{{ error }}</div>
+      </div>
+    {% endif %}
+
+    {% if answer_text %}
+      <div class="card">
+        <h2>Answer</h2>
+        <div class="answer">{{ answer_text }}</div>
+      </div>
+    {% endif %}
+
+    {% if sources %}
+      <div class="card">
+        <h2>Source Chunks Used</h2>
+        {% for chunk in sources %}
+          <details>
+            <summary>
+              Chunk {{ chunk.chunk_index }} | Rank {{ loop.index }} | Cosine distance {{ "%.4f"|format(chunk.distance) }}
+            </summary>
+            <div class="chunk-text">{{ chunk.text }}</div>
+          </details>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="footer">
+      Built from your notebook contextual retrieval pipeline for Speech and Language Processing.
+    </div>
+  </div>
+
+  <script>
+    function setQuestion(value) {
+      const input = document.getElementById("question");
+      input.value = value;
+      input.focus();
+    }
+  </script>
+</body>
+</html>

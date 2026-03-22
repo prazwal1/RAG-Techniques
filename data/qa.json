@@ -1,0 +1,82 @@
+[
+  {
+    "question": "What is the equation for the sigmoid function used in binary logistic regression?",
+    "answer": "The sigmoid function is σ(z) = 1 / (1 + e^{-z}) = 1 / (1 + exp(-z)). It maps any real-valued number z to the range (0, 1)."
+  },
+  {
+    "question": "In binary logistic regression, how is the probability P(y=1|x) computed?",
+    "answer": "P(y=1|x) = σ(w · x + b) = 1 / (1 + exp(-(w · x + b))), where w is the weight vector, x is the feature vector, and b is the bias."
+  },
+  {
+    "question": "What is the logit and how is it related to the sigmoid?",
+    "answer": "The logit is the input z = w · x + b to the sigmoid (often called the logit). It is the inverse of the sigmoid: logit(p) = ln(p / (1-p)). It represents the log-odds."
+  },
+  {
+    "question": "In the sentiment classification example, what is the computed P(+|x) when using the given features and weights?",
+    "answer": "Using the 6 features and weights [2.5, -5.0, -1.2, 0.5, 2.0, 0.7] with b=0.1, P(+|x) = σ(0.833) = 0.70."
+  },
+  {
+    "question": "Name two common methods for scaling input features in logistic regression and give their formulas.",
+    "answer": "Standardization (z-score): x'_i = (x_i - μ_i) / σ_i. Normalization: x'_i = (x_i - min(x_i)) / (max(x_i) - min(x_i))."
+  },
+  {
+    "question": "How can you compute the output probabilities ŷ for an entire test set of m examples efficiently using matrix operations?",
+    "answer": "Pack inputs into matrix X (m × f), then ŷ = σ(Xw + b), where b is repeated m times."
+  },
+  {
+    "question": "What is the cross-entropy loss function L_CE(ŷ, y) for binary logistic regression?",
+    "answer": "L_CE(ŷ, y) = -[y log ŷ + (1-y) log(1-ŷ)], where ŷ = σ(w · x + b)."
+  },
+  {
+    "question": "Why is the negative log likelihood (cross-entropy) loss used in logistic regression?",
+    "answer": "It penalizes confident wrong predictions heavily (loss → ∞ when probability of correct class → 0) and goes to 0 for perfect predictions. It is the negative log probability of the true label."
+  },
+  {
+    "question": "What is the partial derivative of the cross-entropy loss with respect to weight w_j in binary logistic regression?",
+    "answer": "∂L_CE / ∂w_j = (ŷ - y) x_j (or equivalently -(y - ŷ) x_j), where ŷ = σ(w · x + b)."
+  },
+  {
+    "question": "Describe the stochastic gradient descent update rule for logistic regression.",
+    "answer": "θ^{t+1} = θ^t - η ∇_θ L(f(x^{(i)}; θ), y^{(i)}), where θ = {w, b}, performed on one random training example at a time."
+  },
+  {
+    "question": "What is the difference between batch, stochastic, and mini-batch gradient descent?",
+    "answer": "Batch uses the full dataset; stochastic uses one example; mini-batch uses a small group (e.g., 512) of examples for efficient vectorized computation."
+  },
+  {
+    "question": "What is the softmax function and its formula for a vector z of K values?",
+    "answer": "softmax(z_i) = exp(z_i) / Σ_{j=1}^K exp(z_j). It turns K real values into a probability distribution summing to 1."
+  },
+  {
+    "question": "How is the output probability vector ŷ computed in multinomial (softmax) logistic regression?",
+    "answer": "ŷ = softmax(Wx + b), where W is the K × f weight matrix (one row per class) and b is the bias vector of length K."
+  },
+  {
+    "question": "What is the cross-entropy loss for multinomial logistic regression on a single example?",
+    "answer": "L_CE(ŷ, y) = -Σ_{k=1}^K y_k log ŷ_k = -log ŷ_c (where c is the correct class, y is one-hot)."
+  },
+  {
+    "question": "In multinomial logistic regression, what is the intuitive interpretation of each row w_k of the weight matrix W?",
+    "answer": "Each row w_k is a prototype (template) for class k. Incoming vectors are assigned to the most similar prototype via dot product."
+  },
+  {
+    "question": "Define precision and recall in the context of binary text classification.",
+    "answer": "Precision = TP / (TP + FP). Recall = TP / (TP + FN). Precision measures how many detected positives are correct; recall measures how many actual positives were found."
+  },
+  {
+    "question": "What is the F1-measure and when is it preferred over accuracy?",
+    "answer": "F1 = 2PR / (P + R), the harmonic mean of precision and recall. It is preferred for imbalanced classes because accuracy can be misleading (e.g., 99.99% by always predicting the majority class)."
+  },
+  {
+    "question": "Explain macro-averaging versus micro-averaging for multi-class evaluation.",
+    "answer": "Macro: compute P/R for each class then average. Micro: pool all decisions into one confusion matrix then compute overall P/R. Macro treats all classes equally; micro is dominated by frequent classes."
+  },
+  {
+    "question": "What is 10-fold cross-validation and why is it useful?",
+    "answer": "Partition data into 10 folds; train on 9, test on 1, repeat 10 times and average error. It uses all data for both training and testing while avoiding overfitting a fixed test set."
+  },
+  {
+    "question": "Why is accuracy usually not used to evaluate text classification tasks?",
+    "answer": "When classes are unbalanced (common in NLP, e.g., spam or rare events), a classifier that always predicts the majority class can achieve very high accuracy while being useless."
+  }
+]

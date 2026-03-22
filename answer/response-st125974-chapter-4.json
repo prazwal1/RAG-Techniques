@@ -1,0 +1,122 @@
+[
+  {
+    "question": "What is the equation for the sigmoid function used in binary logistic regression?",
+    "ground_truth_answer": "The sigmoid function is Ïƒ(z) = 1 / (1 + e^{-z}) = 1 / (1 + exp(-z)). It maps any real-valued number z to the range (0, 1).",
+    "naive_rag_answer": "σ (z) = 1 1 + e−z = 1 1 + exp(−z)",
+    "contextual_retrieval_answer": "σ (z) = 1 1 + exp(−z)"
+  },
+  {
+    "question": "In binary logistic regression, how is the probability P(y=1|x) computed?",
+    "ground_truth_answer": "P(y=1|x) = Ïƒ(w Â· x + b) = 1 / (1 + exp(-(w Â· x + b))), where w is the weight vector, x is the feature vector, and b is the bias.",
+    "naive_rag_answer": "The sigmoid function is used to compute the probability P(y = 1|x), which is the probability that the observation is a member of the class.",
+    "contextual_retrieval_answer": "It is computed as σ (w · x(i) + b)."
+  },
+  {
+    "question": "What is the logit and how is it related to the sigmoid?",
+    "ground_truth_answer": "The logit is the input z = w Â· x + b to the sigmoid (often called the logit). It is the inverse of the sigmoid: logit(p) = ln(p / (1-p)). It represents the log-odds.",
+    "naive_rag_answer": "The logit is the log of the odds ratio p 1−p. The sigmoid function maps z (which ranges from −∞ to ∞) into a probability, implicitly interpreting z as a log odds.",
+    "contextual_retrieval_answer": "The logit is the input to the sigmoid function, which is z = w · x + b. The logit is the inverse of the sigmoid."
+  },
+  {
+    "question": "In the sentiment classification example, what is the computed P(+|x) when using the given features and weights?",
+    "ground_truth_answer": "Using the 6 features and weights [2.5, -5.0, -1.2, 0.5, 2.0, 0.7] with b=0.1, P(+|x) = Ïƒ(0.833) = 0.70.",
+    "naive_rag_answer": "Not found in context.",
+    "contextual_retrieval_answer": "P(+|x) = 0.70."
+  },
+  {
+    "question": "Name two common methods for scaling input features in logistic regression and give their formulas.",
+    "ground_truth_answer": "Standardization (z-score): x'_i = (x_i - Î¼_i) / Ïƒ_i. Normalization: x'_i = (x_i - min(x_i)) / (max(x_i) - min(x_i)).",
+    "naive_rag_answer": "Two common methods for scaling input features in logistic regression are:\n\n1.  Standardizing to a zero mean and a standard deviation of one.\n2.  Taking logs, for example when inputs are word counts.",
+    "contextual_retrieval_answer": "Standardizing input values by centering them to result in a zero mean and a standard deviation of one (z-score). Alternatively, we can normalize the input features values to lie between 0 and 1."
+  },
+  {
+    "question": "How can you compute the output probabilities Å· for an entire test set of m examples efficiently using matrix operations?",
+    "ground_truth_answer": "Pack inputs into matrix X (m Ã— f), then Å· = Ïƒ(Xw + b), where b is repeated m times.",
+    "naive_rag_answer": "You can compute the output probabilities for an entire test set of m examples efficiently using matrix operations. Specifically, you can represent the input features as a matrix X of shape [m × f], where each row represents a test example and each column represents a feature. Then, you can compute the predicted output probabilities as a vector ˆy = σ (Xw + b), where w is the weight vector and b is the bias vector.",
+    "contextual_retrieval_answer": "We can pack all the input feature vectors for each input x into a single input matrix X, where each row i is a row vector consisting of the feature vector for in- put example x(i). Assuming each example has f features and weights, X will therefore be a matrix of shape [m × f ]."
+  },
+  {
+    "question": "What is the cross-entropy loss function L_CE(Å·, y) for binary logistic regression?",
+    "ground_truth_answer": "L_CE(Å·, y) = -[y log Å· + (1-y) log(1-Å·)], where Å· = Ïƒ(w Â· x + b).",
+    "naive_rag_answer": "LCE(ˆy,y) = −log p(y|x) = − [ylog ˆy + (1 − y)log(1 − ˆy)]",
+    "contextual_retrieval_answer": "LCE( ˆy,y) = −log p(y|x) = − [ylog ˆy + (1 − y)log(1 − ˆy)]"
+  },
+  {
+    "question": "Why is the negative log likelihood (cross-entropy) loss used in logistic regression?",
+    "ground_truth_answer": "It penalizes confident wrong predictions heavily (loss â†’ âˆž when probability of correct class â†’ 0) and goes to 0 for perfect predictions. It is the negative log probability of the true label.",
+    "naive_rag_answer": "The negative log likelihood loss is used because it represents the loss function that we want to minimize. It is parameterized by the weights.",
+    "contextual_retrieval_answer": "It is used to maximize the log probability of the true y labels in the training data given the observations x. This is called conditional maximum likelihood estimation. The resulting loss function is the negative log likelihood loss, generally called the cross-entropy loss."
+  },
+  {
+    "question": "What is the partial derivative of the cross-entropy loss with respect to weight w_j in binary logistic regression?",
+    "ground_truth_answer": "âˆ‚L_CE / âˆ‚w_j = (Å· - y) x_j (or equivalently -(y - Å·) x_j), where Å· = Ïƒ(w Â· x + b).",
+    "naive_rag_answer": "∂LCE( ˆy,y) ∂w j = [ σ (w · x + b) − y]x j = ( ˆy − y)x j",
+    "contextual_retrieval_answer": "∂LCE ∂w j = [ σ (w · x + b) − y]x j = ( ˆy − y)x j"
+  },
+  {
+    "question": "Describe the stochastic gradient descent update rule for logistic regression.",
+    "ground_truth_answer": "Î¸^{t+1} = Î¸^t - Î· âˆ‡_Î¸ L(f(x^{(i)}; Î¸), y^{(i)}), where Î¸ = {w, b}, performed on one random training example at a time.",
+    "naive_rag_answer": "The stochastic gradient descent algorithm updates θ as follows:\ng ← ∇θ L( f (x(i); θ ),y(i)) # How should we move θ to maximize loss?\nθ ← θ − η g # Go the other way instead\nreturn θ",
+    "contextual_retrieval_answer": "The stochastic gradient descent update rule for logistic regression involves computing the gradient of the loss function with respect to the parameters (w and b) for a single training example. Then, the parameters are updated by moving in the opposite direction of the gradient, scaled by the learning rate."
+  },
+  {
+    "question": "What is the difference between batch, stochastic, and mini-batch gradient descent?",
+    "ground_truth_answer": "Batch uses the full dataset; stochastic uses one example; mini-batch uses a small group (e.g., 512) of examples for efficient vectorized computation.",
+    "naive_rag_answer": "Batch gradient descent computes the gradient over the entire dataset. Stochastic gradient descent chooses a single random example at a time. Mini-batch training trains on a group of m examples (e.g., 512 or 1024) that is less than the whole dataset.",
+    "contextual_retrieval_answer": "Batch gradient descent computes the gradient over the entire dataset. Stochastic gradient descent chooses a single random example at a time. Mini-batch gradient descent trains on a group of m examples (e.g., 512 or 1024) that is less than the whole dataset."
+  },
+  {
+    "question": "What is the softmax function and its formula for a vector z of K values?",
+    "ground_truth_answer": "softmax(z_i) = exp(z_i) / Î£_{j=1}^K exp(z_j). It turns K real values into a probability distribution summing to 1.",
+    "naive_rag_answer": "The softmax function maps a vector of K arbitrary values to a probability distribution, with each value in the range [0,1], and all the values summing to 1. The formula for a vector z of dimensionality K is: softmax(zi) = exp(zi)∑K j=1 exp(z j) 1 ≤ i ≤ K.",
+    "contextual_retrieval_answer": "The softmax function maps a vector of K arbitrary values to a probability distribution, with each value in the range [0,1], and all the values summing to 1. The formula is: softmax(zi) = exp(zi)∑K j=1 exp(z j) 1 ≤ i ≤ K"
+  },
+  {
+    "question": "How is the output probability vector Å· computed in multinomial (softmax) logistic regression?",
+    "ground_truth_answer": "Å· = softmax(Wx + b), where W is the K Ã— f weight matrix (one row per class) and b is the bias vector of length K.",
+    "naive_rag_answer": "The output probability vector ˆy is computed as: P(yk = 1|x) = exp(wk · x + bk) K∑ j=1 exp(w j · x + b j). This involves computing the exponential of the dot product of a weight vector wk with the input vector x, plus a bias bk, for each of the K classes.",
+    "contextual_retrieval_answer": "The output probability vector is computed using the softmax function, which takes a vector of logits and normalizes them into a probability distribution. The softmax function is defined as: softmax(zi) = exp(zi)∑K j=1 exp(z j) 1 ≤ i ≤ K."
+  },
+  {
+    "question": "What is the cross-entropy loss for multinomial logistic regression on a single example?",
+    "ground_truth_answer": "L_CE(Å·, y) = -Î£_{k=1}^K y_k log Å·_k = -log Å·_c (where c is the correct class, y is one-hot).",
+    "naive_rag_answer": "LCE(ˆy, y) = − K∑ k=1 yk log ˆyk (4.38) = −log ˆyc, (where c is the correct class) (4.39) = −log ˆp(yc = 1|x) (where c is the correct class) (4.40)",
+    "contextual_retrieval_answer": "− [ylog ˆy + (1 − y)log(1 − ˆy)]"
+  },
+  {
+    "question": "In multinomial logistic regression, what is the intuitive interpretation of each row w_k of the weight matrix W?",
+    "ground_truth_answer": "Each row w_k is a prototype (template) for class k. Incoming vectors are assigned to the most similar prototype via dot product.",
+    "naive_rag_answer": "Each row w_k in the weight matrix W represents a prototype of class k. These weight vectors are learned to represent each class as a template. The dot product between two vectors is used as a similarity function to determine the most similar class.",
+    "contextual_retrieval_answer": "Each row wk of the weight matrix W represents a prototype of class k."
+  },
+  {
+    "question": "Define precision and recall in the context of binary text classification.",
+    "ground_truth_answer": "Precision = TP / (TP + FP). Recall = TP / (TP + FN). Precision measures how many detected positives are correct; recall measures how many actual positives were found.",
+    "naive_rag_answer": "Precision is defined as tp tp+fp, where tp is the number of true positives and fp is the number of false positives. Recall is defined as tp tp+fn, where tp is the number of true positives and fn is the number of false negatives.",
+    "contextual_retrieval_answer": "Precision measures the percentage of items that the system detected as positive that are actually positive. Recall measures the percentage of items that are actually present in the input that were correctly identified by the system."
+  },
+  {
+    "question": "What is the F1-measure and when is it preferred over accuracy?",
+    "ground_truth_answer": "F1 = 2PR / (P + R), the harmonic mean of precision and recall. It is preferred for imbalanced classes because accuracy can be misleading (e.g., 99.99% by always predicting the majority class).",
+    "naive_rag_answer": "F1 = 2PR P + R. F1 is preferred when precision and recall are equally balanced (β = 1).",
+    "contextual_retrieval_answer": "F1-measure is defined as Fβ = (β 2 + 1)PR β 2P + R. It is preferred when β = 1, which balances precision and recall equally."
+  },
+  {
+    "question": "Explain macro-averaging versus micro-averaging for multi-class evaluation.",
+    "ground_truth_answer": "Macro: compute P/R for each class then average. Micro: pool all decisions into one confusion matrix then compute overall P/R. Macro treats all classes equally; micro is dominated by frequent classes.",
+    "naive_rag_answer": "In macro-averaging, performance is computed for each class, and then averaged over classes. In micro-averaging, decisions for all classes are pooled into a single confusion matrix, and precision and recall are computed from that table.",
+    "contextual_retrieval_answer": "Macro-averaging computes the performance for each class and then averages these values. Micro-averaging collects the decisions for all classes into a single confusion matrix and then computes precision and recall from that table."
+  },
+  {
+    "question": "What is 10-fold cross-validation and why is it useful?",
+    "ground_truth_answer": "Partition data into 10 folds; train on 9, test on 1, repeat 10 times and average error. It uses all data for both training and testing while avoiding overfitting a fixed test set.",
+    "naive_rag_answer": "10-fold cross-validation involves training 10 different models, each on 90% of the data, and testing each model 10 times, averaging the results to get an average error rate. It's useful because it provides a more robust estimate of the model's performance by using different subsets of the data for training and testing.",
+    "contextual_retrieval_answer": "We repeat the sampling process 10 times, training on 90% of the data and testing on the remaining 10%. This allows us to average the test set error rate from these 10 runs to get an average error rate. It is useful because it provides a more robust estimate of the model's performance than a single train-test split."
+  },
+  {
+    "question": "Why is accuracy usually not used to evaluate text classification tasks?",
+    "ground_truth_answer": "When classes are unbalanced (common in NLP, e.g., spam or rare events), a classifier that always predicts the majority class can achieve very high accuracy while being useless.",
+    "naive_rag_answer": "Accuracy doesn’t work well when the classes are unbalanced, which is a common situation in text classification tasks. Therefore, precision and recall are generally used instead.",
+    "contextual_retrieval_answer": "Accuracy doesn’t work well when the classes are unbalanced."
+  }
+]
