@@ -113,8 +113,13 @@ Interpretation:
 
 ## Demo
 
-<video src="demo-video/web-demo.mp4" controls width="600"></video>
-- Demo video (download): [web-demo.mp4](demo-video/web-demo.mp4)
+<video src="demo/web-demo.mp4" controls width="600"></video>
+- Demo video (download): [web-demo.mp4](demo/web-demo.mp4)
+
+### Demo Screenshots
+
+![Demo Answer](demo/Demo-Answer.png)
+![Demo Chunks](demo/Demo-Chunks.png)
 
 
 ## How To Run
